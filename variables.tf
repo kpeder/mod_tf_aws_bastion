@@ -17,6 +17,6 @@ variable delonterm { default = true }
 variable volsize { default = 40 }
 
 
-variable "public_subnets" {}         #list of public subnet ids for the target VPC
-variable "vpc_security_group_ids" {} #list of security group ids to make the bastion member of
-variable "vpc_id" {}                 #vpc id for the target VPC
+variable "public_subnets" { default = [] }         #list of public subnet ids for the target VPC
+variable "vpc_security_group_ids" { default = [] } #list of security group ids to make the bastion member of
+variable "vpc_id" {}                               #vpc id for the target VPC
