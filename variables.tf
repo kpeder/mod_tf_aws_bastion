@@ -1,6 +1,22 @@
-  subnet_id = "${element(module.vpc.public_subnets, 0)}" #how to abstract cleanly but integrate with the vpc module?
+variable workstation_cidr {}
 
-  vpc_security_group_ids = [ "${module.vpc.default_security_group_id}", "${aws_security_group.bastion.id}" ] #same issue
+variable keypair {}
 
-  vpc_id = "${module.vpc.vpc_id}" #same issue
+variable region { default = "us-west-2" }
 
+variable bastion_ami {
+  type = "map"
+  default {
+    "us-east-1" = "ami-8446ff93"
+    "us-west-2" = "ami-d732f0b7"
+  }
+}
+
+variable type { default = "t2.micro" }
+variable delonterm { default = true }
+variable volsize { default = 40 }
+
+
+variable "public_subnets" {}         #list of public subnet ids for the target VPC
+variable "vpc_security_group_ids" {} #list of security group ids to make the bastion member of
+variable "vpc_id" {}                 #vpc id for the target VPC

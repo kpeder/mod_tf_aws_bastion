@@ -4,31 +4,27 @@ resource "aws_instance" "bastion" {
   key_name = "${var.keypair}"
 
   /* select the appropriate AMI */
-  ami = "${lookup(var.bastion, var.region["primary"])}"
+  ami = "${lookup(var.bastion_ami, var.region)}"
 
   /* specify the instance type for the role */
-  instance_type = "${var.bastion["type"]}"
+  instance_type = "${var.type}"
 
-  /* specify the availability zone for the instance */
-  subnet_id = "${element(module.vpc.public_subnets, 0)}" #how to abstract cleanly but integrate with the vpc module?
+  /* specify the subnet for the instance, the first public subnet */
+  subnet_id = "${element(var.public_subnets, 0)}"
 
   /* specify multiples security groups to the instance */
-  vpc_security_group_ids = [ "${module.vpc.default_security_group_id}", "${aws_security_group.bastion.id}" ] #same issue
+  vpc_security_group_ids = [ "${concat(var.vpc_security_group_ids, aws_security_group.bastion.id)}" ]
 
   /* the root (OS) volume. delete the volume on termination */
   root_block_device {
-    delete_on_termination = "${var.bastion["delonterm"]}"
-    volume_size = "${var.bastion["volsize"]}"
+    delete_on_termination = "${var.delonterm}"
+    volume_size           = "${var.volsize}"
   }
-
-  /* determine whether to deploy this resource */
-  count = "${var.bastion["deploy"]}"
-
 }
 
 resource "aws_security_group" "bastion" {
   name   = "bastion-inbound-sg-tf"
-  vpc_id = "${module.vpc.vpc_id}" #same issue
+  vpc_id = "${var.vpc_id}"
 }
 
 resource "aws_security_group_rule" "ingress_ssh" {
