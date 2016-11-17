@@ -13,7 +13,7 @@ resource "aws_instance" "bastion" {
   subnet_id = "${element(var.public_subnets, 0)}"
 
   /* specify multiples security groups to the instance */
-  vpc_security_group_ids = [ "${split(",", var.vpc_security_group_ids)}, ${split(",", aws_security_group.bastion.id)}" ]
+  vpc_security_group_ids = [ "${var.vpc_security_group_ids}, ${aws_security_group.bastion.id}" ]
 
   /* the root (OS) volume. delete the volume on termination */
   root_block_device {
