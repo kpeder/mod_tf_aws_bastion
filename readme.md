@@ -4,9 +4,9 @@
 
       source = "github.com/kpeder/mod_tf_aws_bastion"
 
-      keypair = "${var.keypair}"
+      keypair = "my_aws_keypair_name"
       region = "us-west-2"
-      workstation_cidr = "${var.workstation_cidr}"
+      workstation_cidr = "208.68.35.214/32"
 
       # default ami is Ubuntu Trusty, user 'ubuntu'
       # uncomment below to use your own AMI, specifying region
