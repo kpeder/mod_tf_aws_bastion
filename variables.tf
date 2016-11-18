@@ -2,7 +2,7 @@ variable workstation_cidr {}
 
 variable keypair {}
 
-variable region { default = "us-west-2" }
+variable region {}
 
 variable bastion_ami {
   type = "map"
