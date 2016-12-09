@@ -20,6 +20,12 @@ resource "aws_instance" "bastion" {
     delete_on_termination = "${var.delonterm}"
     volume_size           = "${var.volsize}"
   }
+
+  /* this is very important, as it tells terraform to not mess with tags created by provisioners */
+  lifecycle {
+    ignore_changes = ["tags"]
+  }
+
 }
 
 resource "aws_security_group" "bastion" {
